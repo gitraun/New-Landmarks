@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <input type="file" id="fileInput">
+            <img id="imageDisplay" width="300" height="300" style="display: none;">
+            <video class="input_video"></video>
+            <canvas class="output_canvas" width="300px" height="300px"></canvas>
+        </div>
+    </div>
+
+    <script type="module">
+        const videoElement = document.getElementsByClassName('input_video')[0];
+        const canvasElement = document.getElementsByClassName('output_canvas')[0];
+        const canvasCtx = canvasElement.getContext('2d');
+
+          // Get file input element and image display element
+          const fileInput = document.getElementById('fileInput');
+        const imageDisplay = document.getElementById('imageDisplay');
+
+        // Add event listener to file input element
+        fileInput.addEventListener('change', (event) => {
+            // Get selected file
+            const file = event.target.files[0];
+
+            // Create FileReader object
+            const reader = new FileReader();
+
+            // Set onload event handler for FileReader
+            reader.onload = (e) => {
+                //Image onload
+                imageDisplay.onload = (e) => {
+                    faceMesh.send({ image: imageDisplay });
+                };
+                // Set image display source to the loaded data URL
+                imageDisplay.src = e.target.result;
+
+                // Display the image
+                imageDisplay.style.display = 'inline';
+            };
+
+            // Read the selected file as data URL
+            reader.readAsDataURL(file);
+        });
+
+        function onResults(results) {
+            canvasCtx.save();
+            canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+            canvasCtx.drawImage(                                                    //Fits the output image in the canvas
+                results.image, 0, 0, canvasElement.width, canvasElement.height);
+            if (results.multiFaceLandmarks) {                                       //array of faical landmarks detected by the facial recognition model
+                for (const landmarks of results.multiFaceLandmarks) {
+                    drawConnectors(canvasCtx, landmarks, FACEMESH_TESSELATION,
+                        { color: '#C0C0C070', lineWidth: 1 });
+                    drawConnectors(canvasCtx, landmarks, FACEMESH_RIGHT_EYE, { color: 'orange' });
+                    drawConnectors(canvasCtx, landmarks, FACEMESH_RIGHT_EYEBROW, { color: '#FF3030' });
+                    drawConnectors(canvasCtx, landmarks, FACEMESH_RIGHT_IRIS, { color: '#FF3030' });
+                    drawConnectors(canvasCtx, landmarks, FACEMESH_LEFT_EYE, { color: 'blue' });
+                    drawConnectors(canvasCtx, landmarks, FACEMESH_LEFT_EYEBROW, { color: '#30FF30' });
+                    drawConnectors(canvasCtx, landmarks, FACEMESH_LEFT_IRIS, { color: '#30FF30' });
+                    drawConnectors(canvasCtx, landmarks, FACEMESH_FACE_OVAL, { color: '#E0E0E0' });
+                    drawConnectors(canvasCtx, landmarks, FACEMESH_LIPS, { color: '#E0E0E0' });
+                    console.log(FACEMESH_RIGHT_EYE);
+                    console.log(results.multiFaceLandmarks)
+                }
+            }
+            canvasCtx.restore();
+
+            const eyelids = {};
+            // Extract eyelid coordinates from 'results.multiFaceLandmarks'
+            if (results.multiFaceLandmarks) {
+                for (const landmarks of results.multiFaceLandmarks) {
+                    // Get coordinates of the right eye
+                    const rightEyeLandmarks = landmarks.slice(130, 160); // assuming right eye landmarks are at indices 130-159
+                    const rightEyeCoords = rightEyeLandmarks.map(landmark => ({
+                        x: landmark.x * canvasElement.width,
+                        y: landmark.y * canvasElement.height
+                    }));
+
+                    // Get coordinates of the left eye
+                    const leftEyeLandmarks = landmarks.slice(10, 40); // assuming left eye landmarks are at indices 10-39
+                    const leftEyeCoords = leftEyeLandmarks.map(landmark => ({
+                        x: landmark.x * canvasElement.width,
+                        y: landmark.y * canvasElement.height
+                    }));
+
+                    // Store the eyelid coordinates in the 'eyelids' object
+                    eyelids.rightEye = rightEyeCoords;
+                    eyelids.leftEye = leftEyeCoords;
+                }
+            }
+
+            // Access the eyelid coordinates from the 'eyelids' object
+            console.log(eyelids.rightEye); // Array of objects with 'x' and 'y' properties representing the right eye eyelid coordinates
+            console.log(eyelids.leftEye); // Array of objects with 'x' and 'y' properties representing the left eye eyelid coordinates
+        }
+
+        const faceMesh = new FaceMesh({
+            locateFile: (file) => {
+                return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
+            }
+        });
+        faceMesh.setOptions({
+            maxNumFaces: 1,
+            refineLandmarks: true,
+            minDetectionConfidence: 0.5,
+            minTrackingConfidence: 0.5
+        });
+        faceMesh.onResults(onResults);
+
+        // const camera = new Camera(videoElement, {
+        //     onFrame: async () => {
+        //         await faceMesh.send({ image: videoElement });
+        //     },
+        //     width: 600,
+        //     height: 337.50
+        // });
+        // camera.start();
+    </script>
+</body>
+
+</html>

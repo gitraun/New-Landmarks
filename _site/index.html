@@ -29,8 +29,8 @@
         const canvasElement = document.getElementsByClassName('output_canvas')[0];
         const canvasCtx = canvasElement.getContext('2d');
 
-          // Get file input element and image display element
-          const fileInput = document.getElementById('fileInput');
+        // Get file input element and image display element
+        const fileInput = document.getElementById('fileInput');
         const imageDisplay = document.getElementById('imageDisplay');
 
         // Add event listener to file input element
@@ -58,58 +58,70 @@
             reader.readAsDataURL(file);
         });
 
-        function onResults(results) {
+        function onResults(results, landmarkIndices) {
             canvasCtx.save();
             canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-            canvasCtx.drawImage(                                                    //Fits the output image in the canvas
+            canvasCtx.drawImage(
                 results.image, 0, 0, canvasElement.width, canvasElement.height);
-            if (results.multiFaceLandmarks) {                                       //array of faical landmarks detected by the facial recognition model
+
+            if (results.multiFaceLandmarks) {
                 for (const landmarks of results.multiFaceLandmarks) {
                     drawConnectors(canvasCtx, landmarks, FACEMESH_TESSELATION,
                         { color: '#C0C0C070', lineWidth: 1 });
-                    drawConnectors(canvasCtx, landmarks, FACEMESH_RIGHT_EYE, { color: 'orange' });
-                    drawConnectors(canvasCtx, landmarks, FACEMESH_RIGHT_EYEBROW, { color: '#FF3030' });
-                    drawConnectors(canvasCtx, landmarks, FACEMESH_RIGHT_IRIS, { color: '#FF3030' });
+
+                    drawConnectors(canvasCtx, landmarks, FACEMESH_RIGHT_EYE, {
+                        color: 'orange'
+                    });
+                    drawConnectors(canvasCtx, landmarks, FACEMESH_RIGHT_EYEBROW, {
+                        color: '#FF3030'
+                    });
+                    drawConnectors(canvasCtx, landmarks, FACEMESH_RIGHT_IRIS, {
+                        color: '#FF3030'
+                    });
                     drawConnectors(canvasCtx, landmarks, FACEMESH_LEFT_EYE, { color: 'blue' });
-                    drawConnectors(canvasCtx, landmarks, FACEMESH_LEFT_EYEBROW, { color: '#30FF30' });
-                    drawConnectors(canvasCtx, landmarks, FACEMESH_LEFT_IRIS, { color: '#30FF30' });
-                    drawConnectors(canvasCtx, landmarks, FACEMESH_FACE_OVAL, { color: '#E0E0E0' });
-                    drawConnectors(canvasCtx, landmarks, FACEMESH_LIPS, { color: '#E0E0E0' });
-                    console.log(FACEMESH_RIGHT_EYE);
-                    console.log(results.multiFaceLandmarks)
+                    drawConnectors(canvasCtx, landmarks, FACEMESH_LEFT_EYEBROW, {
+                        color: '#30FF30'
+                    });
+                    drawConnectors(canvasCtx, landmarks, FACEMESH_LEFT_IRIS, {
+                        color: '#30FF30'
+                    });
+                    drawConnectors(canvasCtx, landmarks, FACEMESH_FACE_OVAL, {
+                        color: '#E0E0E0'
+                    });
+
+                    // Loop through the inputted landmark indices
+                    for (let i = 0; i < landmarkIndices.length; i += 2) {
+                        const index1 = landmarkIndices[i];
+                        const index2 = landmarkIndices[i + 1];
+
+                        // Check if both landmark indices are within the valid range
+                        if (index1 >= 0 && index1 < landmarks.length && index2 >= 0 && index2 < landmarks.length) {
+                            // Get the landmark coordinates
+                            const landmark1 = landmarks[index1];
+                            const landmark2 = landmarks[index2];
+                            const x1 = landmark1.x * canvasElement.width;
+                            const y1 = landmark1.y * canvasElement.height;
+                            const x2 = landmark2.x * canvasElement.width;
+                            const y2 = landmark2.y * canvasElement.height;
+
+                            // Draw a line between the two landmarks
+                            canvasCtx.beginPath();
+                            canvasCtx.moveTo(x1, y1);
+                            canvasCtx.lineTo(x2, y2);
+                            canvasCtx.strokeStyle = 'red';
+                            canvasCtx.stroke();
+
+                            // Calculate the distance between the two landmarks
+                            const distance = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+
+                            console.log(`Distance between Landmark ${index1} and Landmark ${index2}: ${distance}px`);
+                        }
+                    }
                 }
             }
+
             canvasCtx.restore();
-
-            const eyelids = {};
-            // Extract eyelid coordinates from 'results.multiFaceLandmarks'
-            if (results.multiFaceLandmarks) {
-                for (const landmarks of results.multiFaceLandmarks) {
-                    // Get coordinates of the right eye
-                    const rightEyeLandmarks = landmarks.slice(130, 160); // assuming right eye landmarks are at indices 130-159
-                    const rightEyeCoords = rightEyeLandmarks.map(landmark => ({
-                        x: landmark.x * canvasElement.width,
-                        y: landmark.y * canvasElement.height
-                    }));
-
-                    // Get coordinates of the left eye
-                    const leftEyeLandmarks = landmarks.slice(10, 40); // assuming left eye landmarks are at indices 10-39
-                    const leftEyeCoords = leftEyeLandmarks.map(landmark => ({
-                        x: landmark.x * canvasElement.width,
-                        y: landmark.y * canvasElement.height
-                    }));
-
-                    // Store the eyelid coordinates in the 'eyelids' object
-                    eyelids.rightEye = rightEyeCoords;
-                    eyelids.leftEye = leftEyeCoords;
-                }
-            }
-
-            // Access the eyelid coordinates from the 'eyelids' object
-            console.log(eyelids.rightEye); // Array of objects with 'x' and 'y' properties representing the right eye eyelid coordinates
-            console.log(eyelids.leftEye); // Array of objects with 'x' and 'y' properties representing the left eye eyelid coordinates
         }
-
         const faceMesh = new FaceMesh({
             locateFile: (file) => {
                 return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
@@ -121,7 +133,8 @@
             minDetectionConfidence: 0.5,
             minTrackingConfidence: 0.5
         });
-        faceMesh.onResults(onResults);
+        const landmarkIndices = [159, 145, 396,374]; // Example landmark indices for measuring distances between landmarks 0-1 and 2-3
+        faceMesh.onResults(results => onResults(results, landmarkIndices));
 
         // const camera = new Camera(videoElement, {
         //     onFrame: async () => {

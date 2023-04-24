@@ -69,59 +69,79 @@
                     drawConnectors(canvasCtx, landmarks, FACEMESH_TESSELATION,
                         { color: '#C0C0C070', lineWidth: 1 });
 
-                    // drawConnectors(canvasCtx, landmarks, FACEMESH_RIGHT_EYE, {
-                    //     color: 'orange'
-                    // });
-                    // drawConnectors(canvasCtx, landmarks, FACEMESH_RIGHT_EYEBROW, {
-                    //     color: '#FF3030'
-                    // });
-                    // drawConnectors(canvasCtx, landmarks, FACEMESH_RIGHT_IRIS, {
-                    //     color: '#FF3030'
-                    // });
-                    // drawConnectors(canvasCtx, landmarks, FACEMESH_LEFT_EYE, { color: 'blue' });
-                    // drawConnectors(canvasCtx, landmarks, FACEMESH_LEFT_EYEBROW, {
-                    //     color: '#30FF30'
-                    // });
-                    // drawConnectors(canvasCtx, landmarks, FACEMESH_LEFT_IRIS, {
-                    //     color: '#30FF30'
-                    // });
-                    // drawConnectors(canvasCtx, landmarks, FACEMESH_FACE_OVAL, {
-                    //     color: '#E0E0E0'
-                    // });
+                    const index1 = landmarkIndices[0];
+                    const index2 = landmarkIndices[1];
+                    const index3 = landmarkIndices[2];
+                    const index4 = landmarkIndices[3];
+                    const index5 = landmarkIndices[4];
+                    const index6 = landmarkIndices[5];
+                    const index7 = landmarkIndices[6];
+                    const index8 = landmarkIndices[7];
 
-                    // Loop through the inputted landmark indices
-                    for (let i = 0; i < landmarkIndices.length; i += 2) {
-                        const index1 = landmarkIndices[i];
-                        const index2 = landmarkIndices[i + 1];
+                    if (index1 >= 0 && index1 < landmarks.length && index2 >= 0 && index2 < landmarks.length &&
+                        index3 >= 0 && index3 < landmarks.length && index4 >= 0 && index4 < landmarks.length &&
+                        index5 >= 0 && index5 < landmarks.length && index6 >= 0 && index6 < landmarks.length &&
+                        index7 >= 0 && index7 < landmarks.length && index8 >= 0 && index8 < landmarks.length) {
+                        const landmark1 = landmarks[index1];
+                        const landmark2 = landmarks[index2];
+                        const landmark3 = landmarks[index3];
+                        const landmark4 = landmarks[index4];
+                        const landmark5 = landmarks[index5];
+                        const landmark6 = landmarks[index6];
+                        const landmark7 = landmarks[index7];
+                        const landmark8 = landmarks[index8];
 
-                        // Check if both landmark indices are within the valid range
-                        if (index1 >= 0 && index1 < landmarks.length && index2 >= 0 && index2 < landmarks.length) {
-                            // Get the landmark coordinates
-                            const landmark1 = landmarks[index1];
-                            const landmark2 = landmarks[index2];
-                            const x1 = landmark1.x * canvasElement.width;
-                            const y1 = landmark1.y * canvasElement.height;
-                            const x2 = landmark2.x * canvasElement.width;
-                            const y2 = landmark2.y * canvasElement.height;
+                        const x1 = landmark1.x * canvasElement.width;
+                        const y1 = landmark1.y * canvasElement.height;
+                        const x2 = landmark2.x * canvasElement.width;
+                        const y2 = landmark2.y * canvasElement.height;
+                        const x3 = landmark3.x * canvasElement.width;
+                        const y3 = landmark3.y * canvasElement.height;
+                        const x4 = landmark4.x * canvasElement.width;
+                        const y4 = landmark4.y * canvasElement.height;
+                        const x5 = landmark5.x * canvasElement.width;
+                        const y5 = landmark5.y * canvasElement.height;
+                        const x6 = landmark6.x * canvasElement.width;
+                        const y6 = landmark6.y * canvasElement.height;
+                        const x7 = landmark7.x * canvasElement.width;
+                        const y7 = landmark7.y * canvasElement.height;
+                        const x8 = landmark8.x * canvasElement.width;
+                        const y8 = landmark8.y * canvasElement.height;
 
-                            // Draw a line between the two landmarks
-                            canvasCtx.beginPath();
-                            canvasCtx.moveTo(x1, y1);
-                            canvasCtx.lineTo(x2, y2);
-                            canvasCtx.strokeStyle = 'red';
-                            canvasCtx.stroke();
+                        canvasCtx.beginPath();
+                        canvasCtx.moveTo(x1, y1);
+                        canvasCtx.lineTo(x2, y2);
+                        canvasCtx.moveTo(x3, y3);
+                        canvasCtx.lineTo(x4, y4);
+                        canvasCtx.moveTo(x5, y5);
+                        canvasCtx.lineTo(x6, y6);
+                        canvasCtx.moveTo(x7, y7);
+                        canvasCtx.lineTo(x8, y8);
+                        canvasCtx.strokeStyle = 'red';
+                        canvasCtx.stroke();
 
-                            // Calculate the distance between the two landmarks
-                            const distance = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+                        const d1 = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+                        const d2 = Math.sqrt(Math.pow(x4 - x3, 2) + Math.pow(y4 - y3, 2));
+                        const ratio1 = d1 / d2;
 
-                            console.log(`Distance between Landmark ${index1} and Landmark ${index2}: ${distance}px`);
-                        }
+                        const d3 = Math.sqrt(Math.pow(x5 - x6, 2) + Math.pow(y5 - y6, 2));
+                        const d4 = Math.sqrt(Math.pow(x7 - x8, 2) + Math.pow(y7 - y8, 2));
+                        const ratio2 = d3 / d4;
+
+                        console.log(`Distance between Landmark ${index1} and Landmark ${index2}: ${d1}px`);
+                        console.log(`Distance between Landmark ${index3} and Landmark ${index4}: ${d2}px`);
+                        console.log(`Ratio between distances: ${ratio1}`);
+
+                        console.log(`Distance between Landmark ${index5} and Landmark ${index6}: ${d3}px`);
+                        console.log(`Distance between Landmark ${index7} and Landmark ${index8}: ${d4}px`);
+                        console.log(`Ratio between distances: ${ratio2}`);
                     }
                 }
             }
 
             canvasCtx.restore();
         }
+
         const faceMesh = new FaceMesh({
             locateFile: (file) => {
                 return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
@@ -133,7 +153,7 @@
             minDetectionConfidence: 0.5,
             minTrackingConfidence: 0.5
         });
-        const landmarkIndices = [386, 374,362,263, 159, 145,133,33]; // Example landmark indices for measuring distances between landmarks 0-1 and 2-3
+        const landmarkIndices = [386, 374, 362, 263, 159,145,33,133]; // Example landmark indices for measuring distances between landmarks 0-1 and 2-3
         faceMesh.onResults(results => onResults(results, landmarkIndices));
 
         // const camera = new Camera(videoElement, {

@@ -43,15 +43,29 @@
 
             // Set onload event handler for FileReader
             reader.onload = (e) => {
-                //Image onload
-                imageDisplay.onload = (e) => {
-                    faceMesh.send({ image: imageDisplay });
-                };
-                // Set image display source to the loaded data URL
-                imageDisplay.src = e.target.result;
-
-                // Display the image
-                imageDisplay.style.display = 'inline';
+                if (file.type.startsWith('image')) {
+                    // Image onload
+                    imageDisplay.onload = (e) => {
+                        // Process the image, e.g., send to a face detection API
+                        console.log('Image loaded:', imageDisplay.src);
+                    };
+                    // Set image display source to the loaded data URL
+                    imageDisplay.src = e.target.result;
+                    // Display the image
+                    imageDisplay.style.display = 'inline';
+                }
+                // Check if the file is a video
+                else if (file.type.startsWith('video')) {
+                    // Video onload
+                    videoElement.onload = (e) => {
+                        // Process the video, e.g., play the video or send video frames to a video processing API
+                        console.log('Video loaded:', videoElement.src);
+                    };
+                    // Set video element source to the loaded data URL
+                    videoElement.src = e.target.result;
+                    // Display the video
+                    videoElement.style.display = 'inline';
+                }
             };
 
             // Read the selected file as data URL
@@ -153,7 +167,7 @@
             minDetectionConfidence: 0.5,
             minTrackingConfidence: 0.5
         });
-        const landmarkIndices = [386, 374, 362, 263, 159,145,33,133]; // Example landmark indices for measuring distances between landmarks 0-1 and 2-3
+        const landmarkIndices = [386, 374, 362, 263, 159, 145, 33, 133]; // Example landmark indices for measuring distances between landmarks 0-1 and 2-3
         faceMesh.onResults(results => onResults(results, landmarkIndices));
 
         // const camera = new Camera(videoElement, {

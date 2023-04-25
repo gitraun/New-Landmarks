@@ -11,13 +11,14 @@
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
-    <title>Document</title>
+    <title>Drowsiness Detection</title>
 </head>
 
 <body>
     <div class="container">
         <div class="row">
             <input type="file" id="fileInput">
+            <br>
             <img id="imageDisplay" width="300" height="300" style="display: none;">
             <video id="videoDisplay" width="300" height="300" autoplay style="display: none;"></video>
             <canvas class="output_canvas" width="800px" height="800px"></canvas>
@@ -45,6 +46,7 @@
 
             // Set onload event handler for FileReader
             reader.onload = (e) => {
+                if(fileInput === )
                 //Image onload
                 imageDisplay.onload = (e) => {
                     faceMesh.send({ image: imageDisplay });
@@ -64,7 +66,6 @@
 
                 // Display the video
                 videoDisplay.style.display = 'inline';
-
             };
 
             // // Check if the file is a video

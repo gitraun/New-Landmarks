@@ -19,7 +19,7 @@
         <div class="row">
             <input type="file" id="fileInput">
             <img id="imageDisplay" width="300" height="300" style="display: none;">
-            <video class="input_video"></video>
+            <video id="videoDisplay" width="300" height="300" autoplay style="display: none;"></video>
             <canvas class="output_canvas" width="800px" height="800px"></canvas>
         </div>
     </div>
@@ -32,6 +32,8 @@
         // Get file input element and image display element
         const fileInput = document.getElementById('fileInput');
         const imageDisplay = document.getElementById('imageDisplay');
+        const videoDisplay = document.getElementById('videoDisplay');
+
 
         // Add event listener to file input element
         fileInput.addEventListener('change', (event) => {
@@ -43,33 +45,44 @@
 
             // Set onload event handler for FileReader
             reader.onload = (e) => {
-                if (file.type.startsWith('image')) {
-                    // Image onload
-                    imageDisplay.onload = (e) => {
-                        // Process the image, e.g., send to a face detection API
-                        console.log('Image loaded:', imageDisplay.src);
-                    };
-                    // Set image display source to the loaded data URL
-                    imageDisplay.src = e.target.result;
-                    // Display the image
-                    imageDisplay.style.display = 'inline';
-                }
-                // Check if the file is a video
-                else if (file.type.startsWith('video')) {
-                    // Video onload
-                    videoElement.onload = (e) => {
-                        // Process the video, e.g., play the video or send video frames to a video processing API
-                        console.log('Video loaded:', videoElement.src);
-                    };
-                    // Set video element source to the loaded data URL
-                    videoElement.src = e.target.result;
-                    // Display the video
-                    videoElement.style.display = 'inline';
-                }
+                //Image onload
+                imageDisplay.onload = (e) => {
+                    faceMesh.send({ image: imageDisplay });
+                };
+                // Set image display source to the loaded data URL
+                imageDisplay.src = e.target.result;
+
+                // Display the image
+                imageDisplay.style.display = 'inline';
+
+                 //Image onload
+                 videoDisplay.onload = (e) => {
+                    faceMesh.send({ image: videoDisplay });
+                };
+                // Set image display source to the loaded data URL
+                videoDisplay.src = e.target.result;
+
+                // Display the image
+                videoDisplay.style.display = 'inline';
+
             };
 
-            // Read the selected file as data URL
-            reader.readAsDataURL(file);
+            // // Check if the file is a video
+            // else if (file.type.startsWith('video')) {
+            //     // Video onload
+            //     videoElement.onloadstart = (e) => {
+            //         // Process the video, e.g., play the video or send video frames to a video processing API
+            //         console.log('Video loaded:', videoElement.src);
+            //     };
+            //     // Set video element source to the loaded data URL
+            //     videoElement.src = e.target.result;
+            //     // Display the video
+            //     videoElement.style.display = 'inline';
+            // }
+        // };
+
+        // Read the selected file as data URL
+        reader.readAsDataURL(file);
         });
 
         function onResults(results, landmarkIndices) {

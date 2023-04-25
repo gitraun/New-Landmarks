@@ -46,45 +46,37 @@
 
             // Set onload event handler for FileReader
             reader.onload = (e) => {
-                if(fileInput === )
-                //Image onload
-                imageDisplay.onload = (e) => {
+                // Check if file type is an image
+                if (file.type.startsWith('image/')) {
+                    // Set image display source to the loaded data URL
+                    imageDisplay.src = e.target.result;
+                    // Display the image
+                    imageDisplay.style.display = 'inline';
+                    // Hide the video
+                    videoDisplay.style.display = 'none';
+                    // Send image to faceMesh (example)
                     faceMesh.send({ image: imageDisplay });
-                };
-                // Set image display source to the loaded data URL
-                imageDisplay.src = e.target.result;
-
-                // Display the image
-                imageDisplay.style.display = 'inline';
-
-                 //Video onload
-                 videoDisplay.onload = (e) => {
-                    faceMesh.send({ image: videoDisplay });
-                };
-                // Set video display source to the loaded data URL
-                videoDisplay.src = e.target.result;
-
-                // Display the video
-                videoDisplay.style.display = 'inline';
+                }
+                // Check if file type is a video
+                else if (file.type.startsWith('video/')) {
+                    // Set video display source to the loaded data URL
+                    videoDisplay.src = e.target.result;
+                    // Display the video
+                    videoDisplay.style.display = 'inline';
+                    // Hide the image
+                    imageDisplay.style.display = 'none';
+                    // Add event listener for video loaded data
+                    videoDisplay.addEventListener('loadeddata', (e) => {
+                        // Send video to faceMesh (example)
+                        faceMesh.send({ video: videoDisplay });
+                    });
+                    // Start playing the video
+                    videoDisplay.play();
+                }
             };
-
-            // // Check if the file is a video
-            // else if (file.type.startsWith('video')) {
-            //     // Video onload
-            //     videoElement.onloadstart = (e) => {
-            //         // Process the video, e.g., play the video or send video frames to a video processing API
-            //         console.log('Video loaded:', videoElement.src);
-            //     };
-            //     // Set video element source to the loaded data URL
-            //     videoElement.src = e.target.result;
-            //     // Display the video
-            //     videoElement.style.display = 'inline';
-            // }
-        // };
-
-        // Read the selected file as data URL
-        reader.readAsDataURL(file);
-        });
+            reader.readAsDataURL(file);
+        }
+        );
 
         function onResults(results, landmarkIndices) {
             canvasCtx.save();

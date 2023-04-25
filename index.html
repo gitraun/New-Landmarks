@@ -55,14 +55,14 @@
                 // Display the image
                 imageDisplay.style.display = 'inline';
 
-                 //Image onload
+                 //Video onload
                  videoDisplay.onload = (e) => {
                     faceMesh.send({ image: videoDisplay });
                 };
-                // Set image display source to the loaded data URL
+                // Set video display source to the loaded data URL
                 videoDisplay.src = e.target.result;
 
-                // Display the image
+                // Display the video
                 videoDisplay.style.display = 'inline';
 
             };

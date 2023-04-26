@@ -11,6 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
+
     <title>Drowsiness Detection</title>
 </head>
 
@@ -31,11 +32,10 @@
         const canvasElement = document.getElementsByClassName('output_canvas')[0];
         const canvasCtx = canvasElement.getContext('2d');
 
-        // Get file input element and image display element
+        // Get file input element and image/video display element
         const fileInput = document.getElementById('fileInput');
         const imageDisplay = document.getElementById('imageDisplay');
         const videoDisplay = document.getElementById('videoDisplay');
-
 
         // Add event listener to file input element
         fileInput.addEventListener('change', (event) => {
@@ -76,8 +76,7 @@
                 }
             };
             reader.readAsDataURL(file);
-        }
-        );
+        });
 
         function onResults(results, landmarkIndices) {
             canvasCtx.save();
@@ -159,7 +158,6 @@
                     }
                 }
             }
-
             canvasCtx.restore();
         }
 
@@ -168,12 +166,14 @@
                 return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
             }
         });
+
         faceMesh.setOptions({
             maxNumFaces: 1,
             refineLandmarks: true,
             minDetectionConfidence: 0.5,
             minTrackingConfidence: 0.5
         });
+
         const landmarkIndices = [386, 374, 362, 263, 159, 145, 33, 133]; // Example landmark indices for measuring distances between landmarks 0-1 and 2-3
         faceMesh.onResults(results => onResults(results, landmarkIndices));
 

@@ -67,12 +67,15 @@
                     // Hide the image
                     imageDisplay.style.display = 'none';
                     // Add event listener for video loaded data
-                    videoDisplay.addEventListener('loadeddata', (e) => {
-                        // Send video to faceMesh (example)
-                        faceMesh.send({ video: videoDisplay });
-                    });
-                    // Start playing the video
-                    videoDisplay.play();
+                    function drawVideoFrame() {
+                        // Clear canvas
+                        canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+                        // Draw video frame on canvas
+                        canvasCtx.drawImage(videoDisplay, 0, 0, canvasElement.width, canvasElement.height);
+                        // Call the function recursively to continuously draw frames
+                        requestAnimationFrame(drawVideoFrame);
+                    }
+                    drawVideoFrame();
                 }
             };
             reader.readAsDataURL(file);

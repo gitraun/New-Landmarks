@@ -62,11 +62,12 @@
                 else if (file.type.startsWith('video/')) {
                     // Set video display source to the loaded data URL
                     videoDisplay.src = e.target.result;
-                    console.log(videoDisplay.height);
-                    console.log(videoDisplay.width);
                     // Display the video
                     videoDisplay.style.display = 'inline';
                     // Hide the image
+                    console.log(videoDisplay.height);
+                    console.log(videoDisplay.width);
+                    
                     imageDisplay.style.display = 'none';
                     // Add event listener for video loaded data
                     function drawVideoFrame() {

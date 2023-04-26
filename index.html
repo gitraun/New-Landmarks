@@ -23,7 +23,7 @@
             <img id="imageDisplay" width="300" style="display: none;">
             <video id="videoDisplay" width="400" autoplay style="display: none;"></video>
             <br>
-            <canvas class="output_canvas" width="600px"></canvas>
+            <canvas class="output_canvas" width="600px" ></canvas>
         </div>
     </div>
 
@@ -62,6 +62,8 @@
                 else if (file.type.startsWith('video/')) {
                     // Set video display source to the loaded data URL
                     videoDisplay.src = e.target.result;
+                    console.log(videoDisplay.height);
+                    console.log(videoDisplay.width);
                     // Display the video
                     videoDisplay.style.display = 'inline';
                     // Hide the image

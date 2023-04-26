@@ -64,13 +64,10 @@
                     videoDisplay.src = e.target.result;
                     // Display the video
                     videoDisplay.style.display = 'inline';
-                    // Hide the image
-                    console.log(videoDisplay.offsetHeight);
-                    console.log(videoDisplay.offsetWidth);
-
+                    //output canvas dimension
                     canvasElement.height = 2 * videoDisplay.offsetHeight;
                     canvasElement.width = 2 * videoDisplay.offsetWidth;
-
+                    // Hide the image
                     imageDisplay.style.display = 'none';
                     // Add event listener for video loaded data
                     function drawVideoFrame() {

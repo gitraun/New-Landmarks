@@ -70,7 +70,7 @@
                     // Hide the image
                     imageDisplay.style.display = 'none';
                     // Add event listener for video loaded data
-                    function async () drawVideoFrame() {
+                    function async drawVideoFrame() {
                          await faceMesh.send({ image: videoDisplay });
                         // Clear canvas
                         // canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);

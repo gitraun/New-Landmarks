@@ -23,7 +23,7 @@
             <img id="imageDisplay" width="300" style="display: none;">
             <video id="videoDisplay" width="400" autoplay style="display: none;"></video>
             <br>
-            <canvas class="output_canvas" width="600px" ></canvas>
+            <canvas class="output_canvas" width="600px"></canvas>
         </div>
     </div>
 
@@ -65,9 +65,9 @@
                     // Display the video
                     videoDisplay.style.display = 'inline';
                     // Hide the image
-                    console.log(videoDisplay.height);
-                    console.log(videoDisplay.width);
-                    
+                    console.log(videoDisplay.offsetHeight);
+                    console.log(videoDisplay.offsetWidth);
+
                     imageDisplay.style.display = 'none';
                     // Add event listener for video loaded data
                     function drawVideoFrame() {
@@ -75,6 +75,9 @@
                         canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
                         // Draw video frame on canvas
                         canvasCtx.drawImage(videoDisplay, 0, 0, canvasElement.width, canvasElement.height);
+
+                        canvasElement.style.height = 2 * videoDisplay.offsetHeight;
+                        canvasElement.style.width = 2 * videoDisplay.offsetWidth;
                         // Call the function recursively to continuously draw frames
                         requestAnimationFrame(drawVideoFrame);
                     }

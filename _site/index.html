@@ -17,7 +17,7 @@
 
 <body>
     <div class="container">
-        <div class="row">
+        <div class="row" style="text-align: center;">
             <input type="file" id="fileInput">
             <br>
             <img id="imageDisplay" width="300" style="display: none;">
@@ -72,7 +72,8 @@
                     // Add event listener for video loaded data
                     async function drawVideoFrame() {
                         await faceMesh.send({ image: videoDisplay });
-                        videoDisplay.requestVideoFrameCallback(drawVideoFrame);
+                        if (!videoDisplay.ended)
+                            requestAnimationFrame(drawVideoFrame);
                     }
                     drawVideoFrame();
                 }

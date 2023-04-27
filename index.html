@@ -71,11 +71,11 @@
                     imageDisplay.style.display = 'none';
                     // Add event listener for video loaded data
                     async function drawVideoFrame() {
-                        await faceMesh.send({ image: imageDisplay });
+                        await faceMesh.send({ image: videoDisplay });
                         // Clear canvas
-                        // canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+                         canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
                         // // Draw video frame on canvas
-                        // canvasCtx.drawImage(videoDisplay, 0, 0, canvasElement.width, canvasElement.height);
+                        canvasCtx.drawImage(videoDisplay, 0, 0, canvasElement.width, canvasElement.height);
                         // Call the function recursively to continuously draw frames
                         requestAnimationFrame(drawVideoFrame);
                     }

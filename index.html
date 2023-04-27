@@ -72,7 +72,7 @@
                     // Add event listener for video loaded data
                     async function drawVideoFrame() {
                         await faceMesh.send({ image: videoDisplay });
-                        requestAnimationFrame(drawVideoFrame);
+                        requestVideoFrameCallback(drawVideoFrame);
                     }
                     drawVideoFrame();
                 }

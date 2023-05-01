@@ -24,14 +24,13 @@
             <img id="imageDisplay" width="300" style="display: none;">
             <video id="videoDisplay" width="400" autoplay style="display: none;"></video>
             <br>
-            <canvas class="output_canvas" width="600 "></canvas>
+            <canvas class="output_canvas" width="600px"></canvas>
             <br>
             <canvas id="ear-chart"></canvas>
-            <br>
         </div>
     </div>
 
-    <script>
+    <script type="module">
         const videoElement = document.getElementsByClassName('input_video')[0];
         const canvasElement = document.getElementsByClassName('output_canvas')[0];
         const canvasCtx = canvasElement.getContext('2d');
@@ -57,9 +56,6 @@
                     imageDisplay.src = e.target.result;
                     // Display the image
                     imageDisplay.style.display = 'inline';
-                    //output canvas dimension
-                    canvasElement.height = 2 * imageDisplay.offsetHeight;
-                    canvasElement.width = 2 * imageDisplay.offsetWidth;
                     // Hide the video
                     videoDisplay.style.display = 'none';
                     // Send image to faceMesh (example)
@@ -87,13 +83,6 @@
             };
             reader.readAsDataURL(file);
         });
-
-        // Function to clear the display area
-        // function clearDisplay() {
-        //     ctx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-        //     imageDisplay.style.display = 'none';
-        //     videoDisplay.style.display = 'none';
-        // }
 
         function onResults(results, landmarkIndices) {
             canvasCtx.save();
@@ -171,12 +160,44 @@
 
                         console.log(`Distance between Landmark ${index5} and Landmark ${index6}: ${d3}px`);
                         console.log(`Distance between Landmark ${index7} and Landmark ${index8}: ${d4}px`);
-                        console.log(`Ratio between distances: ${ratio2}`)
+                        console.log(`Ratio between distances: ${ratio2}`);
 
+
+                        const canvasChart = document.getElementById('ear-chart');
+                        const ctx = canvasChart.getContext('2d');
+
+                        const chart = new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: ['Ear Ratio 1', 'Ear Ratio 2'],
+                                datasets: [{
+                                    label: 'Ear Ratio',
+                                    data: [ratio1, ratio2],
+                                    backgroundColor: [
+                                        'rgba(255, 99, 132, 0.2)',
+                                        'rgba(54, 162, 235, 0.2)'
+                                    ],
+                                    borderColor: [
+                                        'rgba(255, 99, 132, 1)',
+                                        'rgba(54, 162, 235, 1)'
+                                    ],
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        });
                     }
                 }
             }
             canvasCtx.restore();
+
+
         }
 
         const faceMesh = new FaceMesh({
@@ -193,7 +214,7 @@
         });
 
         const landmarkIndices = [386, 374, 362, 263, 159, 145, 33, 133]; // Example landmark indices for measuring distances between landmarks 0-1 and 2-3
-        faceMesh.onResults(results => onResults(results, landmarkIndices));
+        faceMesh.onResults(results => onResults(results, landmarkIndices));   
 
         // const camera = new Camera(videoElement, {
         //     onFrame: async () => {

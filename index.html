@@ -26,7 +26,7 @@
             <br>
             <canvas class="output_canvas" width="600" height="600"></canvas>
             <br>
-            <!-- <canvas id="myChart"></canvas> -->
+            <canvas id="myChart"></canvas>
         </div>
     </div>
 
@@ -83,8 +83,8 @@
                         }
                         else {
                             //Create a new Chart instance with a line chart
-                            const ctx = document.getElementById('myChart').getContext('2d');
-                            const myChart = new Chart(ctx, {
+                            const chartCtx = document.getElementById('myChart').getContext('2d');
+                            const myChart = new Chart(chartCtx, {
                                 type: 'line',
                                 data: {
                                     labels: ['Ratio 1', 'Ratio 2'],

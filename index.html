@@ -40,6 +40,9 @@
         const imageDisplay = document.getElementById('imageDisplay');
         const videoDisplay = document.getElementById('videoDisplay');
 
+        //create an array of ratios
+        const ratios = [];
+
         // Add event listener to file input element
         fileInput.addEventListener('change', (event) => {
             // Get selected file
@@ -83,9 +86,6 @@
             };
             reader.readAsDataURL(file);
         });
-        
-        //create an array of ratios
-        const ratios = [];
 
         function onResults(results, landmarkIndices) {
             canvasCtx.save();
@@ -156,8 +156,8 @@
                         const d3 = Math.sqrt(Math.pow(x5 - x6, 2) + Math.pow(y5 - y6, 2));
                         const d4 = Math.sqrt(Math.pow(x7 - x8, 2) + Math.pow(y7 - y8, 2));
                         const ratio2 = d3 / d4;
-                        
-                        ratios.push(ratio1,ratio2);
+
+                        ratios.push(ratio1, ratio2);
 
                         console.log(ratios);
                         // // Create a new Chart instance with a line chart

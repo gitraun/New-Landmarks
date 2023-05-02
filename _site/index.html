@@ -26,7 +26,7 @@
             <br>
             <canvas class="output_canvas" width="600" height="600"></canvas>
             <br>
-            <!-- <canvas id="myChart"></canvas> -->
+            <canvas id="myChart"></canvas>
         </div>
     </div>
 
@@ -78,8 +78,27 @@
                     // Add event listener for video loaded data
                     async function drawVideoFrame() {
                         await faceMesh.send({ image: videoDisplay });
-                        if (!videoDisplay.ended)
+                        if (!videoDisplay.ended) {
                             requestAnimationFrame(drawVideoFrame);
+                        }
+                        else {
+                            //Create a new Chart instance with a line chart
+                            const ctx = document.getElementById('myChart').getContext('2d');
+                            const myChart = new Chart(ctx, {
+                                type: 'line',
+                                data: {
+                                    labels: ['ratios'],
+                                    datasets: [{
+                                        label: 'Ratios',
+                                        data: ratios,
+                                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                        borderColor: 'rgba(54, 162, 235, 1)',
+                                        borderWidth: 1
+                                    }]
+                                },
+                                options: {}
+                            });
+                        }
                     }
                     drawVideoFrame();
                 }

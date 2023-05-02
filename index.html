@@ -198,53 +198,27 @@
                         const ratio2 = d3 / d4;
 
                         ratios.push(ratio1, ratio2);
-
                         console.log(ratios);
-                        // // Create a new Chart instance with a line chart
-                        // const ctx = document.getElementById('myChart').getContext('2d');
-                        // window.myChart = new Chart(ctx, {
-                        //     type: 'line',
-                        //     data: {
-                        //         labels: ['Ratio 1', 'Ratio 2'],
-                        //         datasets: [{
-                        //             label: 'Ratios',
-                        //             data: ratios,
-                        //             backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                        //             borderColor: 'rgba(54, 162, 235, 1)',
-                        //             borderWidth: 1
-                        //         }]
-                        //     },
-                        //     options: {}
-                        // });
-
-                        // console.log(`Distance between Landmark ${index1} and Landmark ${index2}: ${d1}px`);
-                        // console.log(`Distance between Landmark ${index3} and Landmark ${index4}: ${d2}px`);
-                        // console.log(`Ratio between distances: ${ratio1}`);
-
-                        // console.log(`Distance between Landmark ${index5} and Landmark ${index6}: ${d3}px`);
-                        // console.log(`Distance between Landmark ${index7} and Landmark ${index8}: ${d4}px`);
-                        // console.log(`Ratio between distances: ${ratio2}`);
                     }
                 }
+                canvasCtx.restore();
             }
-            canvasCtx.restore();
-        }
 
-        const faceMesh = new FaceMesh({
-            locateFile: (file) => {
-                return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
-            }
-        });
+            const faceMesh = new FaceMesh({
+                locateFile: (file) => {
+                    return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
+                }
+            });
 
-        faceMesh.setOptions({
-            maxNumFaces: 1,
-            refineLandmarks: true,
-            minDetectionConfidence: 0.5,
-            minTrackingConfidence: 0.5
-        });
+            faceMesh.setOptions({
+                maxNumFaces: 1,
+                refineLandmarks: true,
+                minDetectionConfidence: 0.5,
+                minTrackingConfidence: 0.5
+            });
 
-        const landmarkIndices = [386, 374, 362, 263, 159, 145, 33, 133]; // Example landmark indices for measuring distances between landmarks 0-1 and 2-3
-        faceMesh.onResults(results => onResults(results, landmarkIndices));
+            const landmarkIndices = [386, 374, 362, 263, 159, 145, 33, 133]; // Example landmark indices for measuring distances between landmarks 0-1 and 2-3
+            faceMesh.onResults(results => onResults(results, landmarkIndices));
 
         // const camera = new Camera(videoElement, {
         //     onFrame: async () => {

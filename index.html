@@ -83,22 +83,41 @@
                         }
                         else {
                             //Create a new Chart instance with a line chart
-                            const chartCtx = document.getElementById('myChart').getContext('2d');
-                            const myChart = new Chart(chartCtx, {
-                                type: 'line',
-                                data: {
-                                    labels: ['Ratio 1', 'Ratio 2'],
-                                    datasets: [{
-                                        label: 'EAR',
-                                        data: ratios,
-                                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                                        borderColor: 'rgba(54, 162, 235, 1)',
-                                        borderWidth: 1
-                                    }]
+                            const options = {
+                                responsive: true,
+                                plugins: {
+                                    title: {
+                                        display: true,
+                                        text: 'EAR Ratio'
+                                    },
+                                    legend: {
+                                        display: false,
+                                    }
                                 },
-                                options: {
-                                    
+                                scales: {
+                                    x: {
+                                        display: true,
+                                        title: {
+                                            display: true,
+                                            text: 'Frames'
+                                        }
+                                    },
+                                    y: {
+                                        display: true,
+                                        title: {
+                                            display: true,
+                                            text: 'Ratio'
+                                        }
+                                    }
                                 }
+                            };
+
+                            // Create the chart
+                            const ctx = document.getElementById('myChart').getContext('2d');
+                            const myChart = new Chart(ctx, {
+                                type: 'line',
+                                data: ratios,
+                                options: options,
                             });
                         }
                     }

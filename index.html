@@ -203,22 +203,23 @@
                 }
                 canvasCtx.restore();
             }
+        }
 
-            const faceMesh = new FaceMesh({
-                locateFile: (file) => {
-                    return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
-                }
-            });
+        const faceMesh = new FaceMesh({
+            locateFile: (file) => {
+                return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
+            }
+        });
 
-            faceMesh.setOptions({
-                maxNumFaces: 1,
-                refineLandmarks: true,
-                minDetectionConfidence: 0.5,
-                minTrackingConfidence: 0.5
-            });
+        faceMesh.setOptions({
+            maxNumFaces: 1,
+            refineLandmarks: true,
+            minDetectionConfidence: 0.5,
+            minTrackingConfidence: 0.5
+        });
 
-            const landmarkIndices = [386, 374, 362, 263, 159, 145, 33, 133]; // Example landmark indices for measuring distances between landmarks 0-1 and 2-3
-            faceMesh.onResults(results => onResults(results, landmarkIndices));
+        const landmarkIndices = [386, 374, 362, 263, 159, 145, 33, 133]; // Example landmark indices for measuring distances between landmarks 0-1 and 2-3
+        faceMesh.onResults(results => onResults(results, landmarkIndices));
 
         // const camera = new Camera(videoElement, {
         //     onFrame: async () => {

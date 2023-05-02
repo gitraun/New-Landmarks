@@ -103,13 +103,19 @@
                                     {
                                         label: 'Ratios 2',
                                         data: ratios2,
-                                        backgroundColor: 'green',
-                                        borderColor: 'green',
+                                        backgroundColor: 'lightgreen',
+                                        borderColor: 'lightgreen',
                                         borderWidth: 1
                                     },
                                     ]
                                 },
-                                options: {}
+                                options: {
+                                    elements: {
+                                        point: {
+                                            radius: 0
+                                        }
+                                    }
+                                }
                             });
                         }
                     }

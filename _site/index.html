@@ -154,9 +154,21 @@
                         const d4 = Math.sqrt(Math.pow(x7 - x8, 2) + Math.pow(y7 - y8, 2));
                         const ratio2 = d3 / d4;
 
-                        const ratios = [ratio1, ratio2];
-                        console.log(ratios);
+                        const ratios = [];
 
+                        for (let i = 0; i < landmarks.length; i += 4) {
+                            const [x1, y1, x2, y2, x3, y3, x4, y4] = landmarks.slice(i, i + 8);
+                            const d1 = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+                            const d2 = Math.sqrt(Math.pow(x4 - x3, 2) + Math.pow(y4 - y3, 2));
+                            const d3 = Math.sqrt(Math.pow(x5 - x6, 2) + Math.pow(y5 - y6, 2));
+                            const d4 = Math.sqrt(Math.pow(x7 - x8, 2) + Math.pow(y7 - y8, 2));
+                            const ratio1 = d1 / d2;
+                            const ratio2 = d3 / d4;
+                            ratios.push(ratio1);
+                            ratios.push(ratio2);
+                        }
+
+                        console.log(ratios);
                         // Create a new Chart instance with a line chart
                         const ctx = document.getElementById('myChart').getContext('2d');
                         window.myChart = new Chart(ctx, {

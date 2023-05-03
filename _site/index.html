@@ -138,13 +138,14 @@
                         await faceMesh.send({ image: videoDisplay });
                         if (!videoDisplay.ended) {
                             requestAnimationFrame(drawVideoFrame);
+                            var frameCount;
                         }
                         else {
                             //plotEAR();
                         }
                     }
                     drawVideoFrame();
-                    console.log(requestAnimationFrame);
+                    console.log();
                 }
             };
             reader.readAsDataURL(file);

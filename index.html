@@ -44,6 +44,68 @@
         const ratios1 = [];
         const ratios2 = [];
 
+        function plotEAR() {
+            //Create a new Chart instance with a line chart
+            let labels = [];
+            for (let i = 1; i <= ratios1.length; i++) {
+                labels.push(i);
+            }
+            const ctx = document.getElementById('myChart').getContext('2d');
+            const myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Left Eye EAR',
+                        data: ratios1,
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Right Eye EAR',
+                        data: ratios2,
+                        backgroundColor: 'lightgreen',
+                        borderColor: 'lightgreen',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Threshold',
+                        data: Array(labels.length).fill(0.15),
+                        backgroundColor: 'black',
+                        borderColor: 'black',
+                        borderWidth: 1
+                    }
+                    ]
+                },
+                options: {
+                    elements: {
+                        point: {
+                            radius: 0
+                        }
+                    }
+                }
+            });
+        }
+
+        // // Define a function to update the chart with new data
+        // function updateChart() {
+        //     // Get the current frame number of the video
+        //     const frameNumber = Math.floor(video.currentTime * FRAME_RATE);
+
+        //     // Add the new data to the chart
+        //     myChart.data.datasets[0].data.push(ratios1[frameNumber]);
+        //     myChart.data.datasets[1].data.push(ratios2[frameNumber]);
+        //     myChart.data.datasets[2].data.push(0.15);
+        //     myChart.update();
+
+        //     // Call this function again on the next frame
+        //     requestAnimationFrame(updateChart);
+        // }
+
+        // Start updating the chart on each frame of the video
+        // requestAnimationFrame(updateChart);
+
         // Add event listener to file input element
         fileInput.addEventListener('change', (event) => {
             // Get selected file
@@ -76,6 +138,7 @@
                     canvasElement.width = 2 * videoDisplay.offsetWidth;
                     // Hide the image
                     imageDisplay.style.display = 'none';
+
                     // Add event listener for video loaded data
                     async function drawVideoFrame() {
                         await faceMesh.send({ image: videoDisplay });
@@ -83,47 +146,7 @@
                             requestAnimationFrame(drawVideoFrame);
                         }
                         else {
-                            //Create a new Chart instance with a line chart
-                            let labels = [];
-                            for (let i = 1; i <= ratios1.length; i++) {
-                                labels.push(i);
-                            }
-                            const ctx = document.getElementById('myChart').getContext('2d');
-                            const myChart = new Chart(ctx, {
-                                type: 'line',
-                                data: {
-                                    labels: labels,
-                                    datasets: [{
-                                        label: 'Ratios 1',
-                                        data: ratios1,
-                                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                                        borderColor: 'rgba(54, 162, 235, 1)',
-                                        borderWidth: 1
-                                    },
-                                    {
-                                        label: 'Ratios 2',
-                                        data: ratios2,
-                                        backgroundColor: 'lightgreen',
-                                        borderColor: 'lightgreen',
-                                        borderWidth: 1
-                                    },
-                                    {
-                                        label: 'Threshold',
-                                        data: Array(labels.length).fill(0.15),
-                                        backgroundColor: 'black',
-                                        borderColor: 'black',
-                                        borderWidth: 1
-                                    }
-                                    ]
-                                },
-                                options: {
-                                    elements: {
-                                        point: {
-                                            radius: 0
-                                        }
-                                    }
-                                }
-                            });
+                            plotEAR();
                         }
                     }
                     drawVideoFrame();

@@ -48,7 +48,7 @@
             //Create a new Chart instance with a line chart 
             //inconsistent graph results
             let labels = [];
-            for (let i = 1; i <= ratios1.length; i++) {
+            for (let i = 1; i <= 5; i++) {
                 labels.push(i);
             }
             const ctx = document.getElementById('myChart').getContext('2d');
@@ -87,6 +87,16 @@
                     }
                 }
             });
+        }
+
+        function updateChart(newData) {
+            // Add new data to the chart
+            if (myChart.data.labels.length < 3) {
+                myChart.data.labels.push(newData.label);
+                myChart.data.datasets[0].data.push(newData.value);
+            }
+            // Update the chart
+            myChart.update();
         }
 
         // // Define a function to update the chart with new data

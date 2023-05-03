@@ -39,6 +39,7 @@
         const fileInput = document.getElementById('fileInput');
         const imageDisplay = document.getElementById('imageDisplay');
         const videoDisplay = document.getElementById('videoDisplay');
+        var frameCount = 0;
 
         //create an array of ratios
         const leftEAR = [];
@@ -138,14 +139,12 @@
                         await faceMesh.send({ image: videoDisplay });
                         if (!videoDisplay.ended) {
                             requestAnimationFrame(drawVideoFrame);
-                            var frameCount;
                         }
                         else {
                             //plotEAR();
                         }
                     }
                     drawVideoFrame();
-                    console.log();
                 }
             };
             reader.readAsDataURL(file);
@@ -223,6 +222,8 @@
 
                         rightEAR.push(rightEye);
                         leftEAR.push(leftEye);
+                        frameCount++;
+                        console.log(frameCount);
                     }
                 }
             }

@@ -41,11 +41,12 @@
         const videoDisplay = document.getElementById('videoDisplay');
 
         //create an array of ratios
-        const ratios1 = [];
-        const ratios2 = [];
+        const leftEAR = [];
+        const rightEAR = [];
 
         function plotEAR() {
-            //Create a new Chart instance with a line chart
+            //Create a new Chart instance with a line chart 
+            //inconsistent graph results
             let labels = [];
             for (let i = 1; i <= ratios1.length; i++) {
                 labels.push(i);
@@ -57,14 +58,14 @@
                     labels: labels,
                     datasets: [{
                         label: 'Left Eye EAR',
-                        data: ratios1,
+                        data: leftEAR,
                         backgroundColor: 'rgba(54, 162, 235, 0.2)',
                         borderColor: 'rgba(54, 162, 235, 1)',
                         borderWidth: 1
                     },
                     {
                         label: 'Right Eye EAR',
-                        data: ratios2,
+                        data: rightEAR,
                         backgroundColor: 'lightgreen',
                         borderColor: 'lightgreen',
                         borderWidth: 1
@@ -219,14 +220,14 @@
 
                         const d1 = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
                         const d2 = Math.sqrt(Math.pow(x4 - x3, 2) + Math.pow(y4 - y3, 2));
-                        const ratio1 = d1 / d2;
+                        const rightEye = d1 / d2;
 
                         const d3 = Math.sqrt(Math.pow(x5 - x6, 2) + Math.pow(y5 - y6, 2));
                         const d4 = Math.sqrt(Math.pow(x7 - x8, 2) + Math.pow(y7 - y8, 2));
-                        const ratio2 = d3 / d4;
+                        const leftEye = d3 / d4;
 
-                        ratios1.push(ratio1);
-                        ratios2.push(ratio2);
+                        rightEAR.push(rightEye);
+                        leftEAR.push(leftEye);
 
                         // // Create a new Chart instance with a line chart
                         // const ctx = document.getElementById('myChart').getContext('2d');

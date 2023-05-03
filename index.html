@@ -48,7 +48,7 @@
             //Create a new Chart instance with a line chart 
             //inconsistent graph results
             let labels = [];
-            for (let i = 1; i <= 5; i++) {
+            for (let i = 1; i <= 3; i++) {
                 labels.push(i);
             }
             const ctx = document.getElementById('myChart').getContext('2d');
@@ -98,24 +98,6 @@
             // Update the chart
             myChart.update();
         }
-
-        // // Define a function to update the chart with new data
-        // function updateChart() {
-        //     // Get the current frame number of the video
-        //     const frameNumber = Math.floor(video.currentTime * FRAME_RATE);
-
-        //     // Add the new data to the chart
-        //     myChart.data.datasets[0].data.push(ratios1[frameNumber]);
-        //     myChart.data.datasets[1].data.push(ratios2[frameNumber]);
-        //     myChart.data.datasets[2].data.push(0.15);
-        //     myChart.update();
-
-        //     // Call this function again on the next frame
-        //     requestAnimationFrame(updateChart);
-        // }
-
-        // Start updating the chart on each frame of the video
-        // requestAnimationFrame(updateChart);
 
         // Add event listener to file input element
         fileInput.addEventListener('change', (event) => {
@@ -238,31 +220,6 @@
 
                         rightEAR.push(rightEye);
                         leftEAR.push(leftEye);
-
-                        // // Create a new Chart instance with a line chart
-                        // const ctx = document.getElementById('myChart').getContext('2d');
-                        // window.myChart = new Chart(ctx, {
-                        //     type: 'line',
-                        //     data: {
-                        //         labels: ['Ratio 1', 'Ratio 2'],
-                        //         datasets: [{
-                        //             label: 'Ratios',
-                        //             data: ratios,
-                        //             backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                        //             borderColor: 'rgba(54, 162, 235, 1)',
-                        //             borderWidth: 1
-                        //         }]
-                        //     },
-                        //     options: {}
-                        // });
-
-                        // console.log(`Distance between Landmark ${index1} and Landmark ${index2}: ${d1}px`);
-                        // console.log(`Distance between Landmark ${index3} and Landmark ${index4}: ${d2}px`);
-                        // console.log(`Ratio between distances: ${ratio1}`);
-
-                        // console.log(`Distance between Landmark ${index5} and Landmark ${index6}: ${d3}px`);
-                        // console.log(`Distance between Landmark ${index7} and Landmark ${index8}: ${d4}px`);
-                        // console.log(`Ratio between distances: ${ratio2}`);
                     }
                 }
             }
